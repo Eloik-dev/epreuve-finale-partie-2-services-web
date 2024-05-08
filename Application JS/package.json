@@ -1,0 +1,19 @@
+{
+  "name": "application-js",
+  "version": "1.0.0",
+  "description": "Page de gestion pour le projet final de services web",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon server.js",
+    "sass": "sass --watch public/scss:public/css"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "nodemon": "^3.1.0",
+    "sass": "^1.76.0"
+  }
+}
