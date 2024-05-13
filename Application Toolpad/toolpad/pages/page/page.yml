@@ -1,0 +1,697 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/mui/mui-toolpad/v0.1.55/docs/schemas/v1/definitions.json#properties/Page
+
+apiVersion: v1
+kind: page
+spec:
+  title: Default page
+  alias:
+    - VFOdXXX
+  content:
+    - component: Text
+      name: titre
+      props:
+        value: Gestion des tâches
+        variant: h1
+      layout:
+        horizontalAlign: center
+        verticalAlign: center
+    - component: Spacer
+      name: spacer1
+    - component: Container
+      name: selectionTacheContainer
+      children:
+        - component: Text
+          name: instructionsTaches
+          layout:
+            horizontalAlign: start
+          props:
+            value: Sélectionnez une tâche afin de l'afficher en détails
+        - component: DataGrid
+          name: tachesGrid
+          props:
+            rows:
+              $$jsExpression: "TachesPourUtilisateur.data.sort((a, b) => {\r
+
+                \  return a.id - b.id\r
+
+                })"
+            columns:
+              - field: id
+                type: number
+              - field: titre
+                type: string
+                width: 227
+              - field: complete
+                type: number
+        - component: Checkbox
+          name: tachesCompleteesCheckbox
+          props:
+            mode: checkBox
+            label: Afficher les tâches complétées
+        - component: PageRow
+          name: boutonsTaches
+          props:
+            justifyContent: start
+            gap: 1
+          children:
+            - component: Button
+              name: changeStatusButton
+              layout:
+                columnSize: 0.5891915042862242
+              props:
+                content: Basculer compléter
+                onClick:
+                  $$jsExpressionAction: "await ModifierTacheStatus.fetch()\r
+
+                    await TachesPourUtilisateur.refetch()"
+                disabled:
+                  $$jsExpression:
+                    tachesGrid.rows === undefined || tachesGrid.selection ===
+                    undefined
+            - component: Button
+              name: supprimerTacheButton
+              layout:
+                columnSize: 0.5917265603404419
+              props:
+                content: Supprimer la tâche
+                onClick:
+                  $$jsExpressionAction: "await SupprimerTache.fetch()\r
+
+                    await TachesPourUtilisateur.refetch()"
+                disabled:
+                  $$jsExpression:
+                    tachesGrid.rows === undefined || tachesGrid.selection ===
+                    undefined
+            - component: Button
+              name: annulerSelectionButton
+              layout:
+                columnSize: 1.8190819353733338
+              props:
+                content: Annuler la sélection
+                onClick:
+                  $$jsExpressionAction: tachesGrid.selection = undefined
+                disabled:
+                  $$jsExpression:
+                    tachesGrid.rows === undefined || tachesGrid.selection ===
+                    undefined
+                fullWidth: false
+    - component: Form
+      name: detailsTacheForm
+      children:
+        - component: Spacer
+          name: spacer
+        - component: Text
+          name: detailsTacheTitre
+          props:
+            value:
+              $$jsExpression:
+                '(tachesGrid.rows === undefined || tachesGrid.selection ===
+                undefined) ? "Ajouter une tâche" : "Détails de la tâche
+                sélectionnée"'
+            variant: h3
+          layout:
+            horizontalAlign: center
+        - component: Container
+          name: detailsTache
+          props:
+            visible: true
+          children:
+            - component: PageRow
+              name: titreRow
+              props:
+                justifyContent: start
+              children:
+                - component: Text
+                  name: titreLabel
+                  layout:
+                    columnSize: 0.3248251801604158
+                    verticalAlign: center
+                  props:
+                    value: "Titre: "
+                - component: TextField
+                  name: titreInput
+                  layout:
+                    columnSize: 1.6751748198395842
+                    horizontalAlign: start
+                  props:
+                    defaultValue: null
+                    fullWidth: true
+                    name: titre
+            - component: PageRow
+              name: descriptionRow
+              props:
+                justifyContent: start
+              children:
+                - component: Text
+                  name: descriptionLabel
+                  layout:
+                    columnSize: 0.3248251801604158
+                    verticalAlign: center
+                  props:
+                    value: "Description:"
+                - component: TextField
+                  name: descriptionInput
+                  layout:
+                    columnSize: 1.6751748198395842
+                  props:
+                    defaultValue:
+                      $$jsExpression: ""
+                    fullWidth: true
+                    name: description
+            - component: PageRow
+              name: dateDebutRow
+              props:
+                justifyContent: start
+              children:
+                - component: Text
+                  name: dateDebutLabel
+                  layout:
+                    columnSize: 0.3248251714953129
+                    verticalAlign: center
+                  props:
+                    value: "Date de début:"
+                - component: DatePicker
+                  name: dateDebutPicker
+                  layout:
+                    columnSize: 1.6751748285046868
+                  props:
+                    defaultValue:
+                      $$jsExpression:
+                        '(tachesGrid.rows && tachesGrid.selection) ?
+                        DetailsTache?.data?.date_debut : ""'
+                    fullWidth: false
+                    name: date_debut
+            - component: PageRow
+              name: dateEcheanceRow
+              props:
+                justifyContent: start
+              children:
+                - component: Text
+                  name: dateEcheanceLabel
+                  layout:
+                    columnSize: 0.3248251714953129
+                    verticalAlign: center
+                  props:
+                    value: "Date de l'échéance:"
+                - component: DatePicker
+                  name: dateEcheancePicker
+                  layout:
+                    columnSize: 1.6751748285046868
+                  props:
+                    defaultValue:
+                      $$jsExpression:
+                        '(tachesGrid.rows && tachesGrid.selection) ?
+                        DetailsTache?.data?.date_echeance : ""'
+                    name: date_echeance
+      props:
+        submitButtonText:
+          $$jsExpression:
+            "`${tachesGrid.selection == undefined ? 'Ajouter la tâche' :
+            'Modifier la tâche'}`"
+        hasResetButton: false
+        formControlsFullWidth: false
+        formControlsAlign: start
+        onSubmit:
+          $$jsExpressionAction: "if (tachesGrid.selection) {\r
+
+            \  await ModifierTache.fetch()\r
+
+            } else {\r
+
+            \  await AjouterTache.fetch()\r
+
+            }\r
+
+            \r
+
+            await TachesPourUtilisateur.refetch()"
+    - component: Spacer
+      name: spacer2
+    - component: Container
+      name: selectionSousTacheContainer
+      children:
+        - component: Text
+          name: text
+          layout:
+            horizontalAlign: center
+            verticalAlign: center
+          props:
+            value: Sous-tâches
+            variant: h2
+        - component: Text
+          name: instructionsSousTaches
+          layout:
+            horizontalAlign: start
+          props:
+            value: Les sous-tâches de la tâche sélectionnée
+        - component: DataGrid
+          name: sousTachesGrid
+          props:
+            rows:
+              $$jsExpression:
+                "tachesGrid.selection ? DetailsTache?.data?.sousTaches?.sort((a,
+                b) => {\r
+
+                \  return a.id - b.id\r
+
+                }) : []"
+            columns:
+              - field: id
+                type: number
+              - field: titre
+                type: string
+                width: 227
+              - field: complete
+                type: number
+        - component: PageRow
+          name: boutonsSousTaches
+          props:
+            justifyContent: start
+            gap: 1
+          children:
+            - component: Button
+              name: sousTacheChangeStatusButton
+              layout:
+                columnSize: 0.5891915042862242
+              props:
+                content: Basculer compléter
+                onClick:
+                  $$jsExpressionAction: "await ModifierTacheStatus.fetch()\r
+
+                    await TachesPourUtilisateur.refetch()"
+                disabled:
+                  $$jsExpression:
+                    sousTachesGrid.rows === undefined || sousTachesGrid.selection
+                    === undefined
+            - component: Button
+              name: supprimerSousTacheButton
+              layout:
+                columnSize: 0.5917265603404419
+              props:
+                content: Supprimer la sous-tâche
+                onClick:
+                  $$jsExpressionAction: await SupprimerSousTache.fetch()
+                disabled:
+                  $$jsExpression:
+                    sousTachesGrid.rows === undefined || sousTachesGrid.selection
+                    === undefined
+            - component: Button
+              name: sousTacheAnnulerSelectionButton
+              layout:
+                columnSize: 1.8190819353733338
+              props:
+                content: Annuler la sélection
+                onClick:
+                  $$jsExpressionAction: tachesGrid.selection = undefined
+                disabled:
+                  $$jsExpression:
+                    sousTachesGrid.rows === undefined || sousTachesGrid.selection
+                    === undefined
+                fullWidth: false
+        - component: Form
+          name: detailsSousTacheForm
+          props:
+            submitButtonText:
+              $$jsExpression:
+                "`${sousTachesGrid.selection == undefined ? 'Ajouter la
+                sous-tâche' : 'Modifier la sous-tâche'}`"
+            hasResetButton: false
+            formControlsFullWidth: false
+            formControlsAlign: start
+            onSubmit:
+              $$jsExpressionAction: "if (sousTachesGrid.rows === undefined ||
+                sousTachesGrid.selection === undefined)\r
+
+                {\r
+
+                \  await AjouterSousTache.fetch()\r
+
+                } else {\r
+
+                \  await ModifierSousTache.fetch()\r
+
+                }"
+          children:
+            - component: Spacer
+              name: spacer3
+            - component: Text
+              name: detailsSousTacheTitre
+              layout:
+                horizontalAlign: center
+              props:
+                value:
+                  $$jsExpression:
+                    '(sousTachesGrid.rows === undefined || sousTachesGrid.selection
+                    === undefined) ? "Ajouter une sous-tâche" : "Modifier la
+                    sous-tâche sélectionnée"'
+                variant: h3
+            - component: Container
+              name: detailsSousTache
+              props:
+                visible: true
+              children:
+                - component: PageRow
+                  name: sousTacheTitreRow
+                  props:
+                    justifyContent: start
+                  children:
+                    - component: Text
+                      name: sousTacheTitreLabel
+                      layout:
+                        columnSize: 0.3248251801604158
+                        verticalAlign: center
+                      props:
+                        value: "Titre: "
+                    - component: TextField
+                      name: sousTacheTitreInput
+                      layout:
+                        columnSize: 1.6751748198395842
+                        horizontalAlign: start
+                      props:
+                        defaultValue:
+                          $$jsExpression: 'tachesGrid.selection ? DetailsTache?.data?.titre : ""'
+                        fullWidth: true
+                        name: titre
+  queries:
+    - name: TachesPourUtilisateur
+      mode: query
+      query:
+        kind: rest
+        url:
+          $$jsExpression: "`${parameters.HOST}/api/tache/afficher`"
+        headers:
+          - name: Authorization
+            value:
+              $$jsExpression: parameters.API_KEY
+        method: GET
+        response:
+          kind: json
+        transform: "return data.map(tache => {\r
+
+          \  tache.complete = tache.complete ? 1 : 0\r
+
+          \  return tache\r
+
+          });"
+        transformEnabled: true
+        searchParams:
+          [
+            {
+              name: complete,
+              value:
+                {
+                  $$jsExpression:
+                    "parameters.afficher_complete === undefined ? 0 :
+                    Number(parameters.afficher_complete)",
+                },
+            },
+          ]
+      parameters:
+        - name: API_KEY
+          value:
+            $$env: API_KEY
+        - name: HOST
+          value:
+            $$env: HOST
+        - name: afficher_complete
+          value:
+            $$jsExpression: tachesCompleteesCheckbox.checked
+      enabled: true
+      refetchInterval: 5000
+    - name: DetailsTache
+      mode: query
+      query:
+        kind: rest
+        url:
+          $$jsExpression: "`${parameters.HOST}/api/tache/details`"
+        headers:
+          [
+            {
+              name: Authorization,
+              value: { $$jsExpression: parameters.API_KEY },
+            },
+          ]
+        method: GET
+        body:
+          kind: raw
+          content:
+            $$jsExpression: "{}"
+          contentType: application/json
+        searchParams:
+          - name: id
+            value:
+              $$jsExpression: parameters.id
+        transform:
+          "return {...data, sousTaches: data.sousTaches.map(sousTache => {\r
+
+          \  return {...sousTache, complete: sousTache.complete ? 1 : 0};\r
+
+          })};\r\n"
+        transformEnabled: true
+      parameters:
+        - name: API_KEY
+          value:
+            $$env: API_KEY
+        - name: HOST
+          value:
+            $$env: HOST
+        - name: id
+          value:
+            $$jsExpression: tachesGrid?.selection?.id
+      refetchInterval: 5000
+      enabled:
+        $$jsExpression: tachesGrid.selection?.id !== undefined
+    - name: ModifierTache
+      mode: mutation
+      query:
+        kind: rest
+        url:
+          $$jsExpression: "`${parameters.HOST}/api/tache/modifier`"
+        searchParams: []
+        headers:
+          - name: Authorization
+            value:
+              $$jsExpression: parameters.API_KEY
+        body:
+          kind: raw
+          content:
+            $$jsExpression:
+              "JSON.stringify({'id': parameters.id, 'titre': parameters.titre,
+              'description': parameters.description, 'date_debut':
+              parameters.date_debut, 'date_echeance': parameters.date_echeance,
+              'complete': parameters.complete})"
+          contentType: application/json
+        method: PUT
+      parameters:
+        - name: API_KEY
+          value:
+            $$env: API_KEY
+        - name: HOST
+          value:
+            $$env: HOST
+        - name: id
+          value:
+            $$jsExpression: tachesGrid?.selection?.id
+        - name: titre
+          value:
+            $$jsExpression: titreInput.value ?? ""
+        - name: description
+          value:
+            $$jsExpression: descriptionInput.value ?? ""
+        - name: date_debut
+          value:
+            $$jsExpression: dateDebutPicker.value ?? ""
+        - name: date_echeance
+          value:
+            $$jsExpression: dateEcheancePicker.value ?? ""
+        - name: complete
+          value:
+            $$jsExpression: completeInput.value ?? false
+    - name: ModifierTacheStatus
+      mode: mutation
+      query:
+        kind: rest
+        url:
+          $$jsExpression: "`${parameters.HOST}/api/tache/modifier/status`"
+        searchParams: []
+        headers:
+          - name: Authorization
+            value:
+              $$jsExpression: parameters.API_KEY
+        body:
+          kind: raw
+          content:
+            $$jsExpression: "JSON.stringify({'id': parameters.id, 'complete':
+              parameters.complete})"
+          contentType: application/json
+        method: PUT
+      parameters:
+        - name: API_KEY
+          value:
+            $$env: API_KEY
+        - name: HOST
+          value:
+            $$env: HOST
+        - name: id
+          value:
+            $$jsExpression: tachesGrid?.selection?.id
+        - name: complete
+          value:
+            $$jsExpression: "tachesGrid?.selection?.complete == 1 ? 0 : 1"
+    - name: SupprimerTache
+      mode: mutation
+      query:
+        kind: rest
+        url:
+          $$jsExpression: "`${parameters.HOST}/api/tache/supprimer`"
+        searchParams: [{ name: id, value: { $$jsExpression: parameters.id } }]
+        headers:
+          - name: Authorization
+            value:
+              $$jsExpression: parameters.API_KEY
+        body:
+          kind: raw
+          content: ""
+          contentType: application/json
+        method: DELETE
+      parameters:
+        - name: API_KEY
+          value:
+            $$env: API_KEY
+        - name: HOST
+          value:
+            $$env: HOST
+        - name: id
+          value:
+            $$jsExpression: tachesGrid?.selection?.id
+    - name: AjouterTache
+      mode: mutation
+      query:
+        kind: rest
+        url:
+          $$jsExpression: "`${parameters.HOST}/api/tache/ajouter`"
+        searchParams: []
+        headers:
+          - name: Authorization
+            value:
+              $$jsExpression: parameters.API_KEY
+        body:
+          kind: raw
+          content:
+            $$jsExpression:
+              "JSON.stringify({'id': parameters.id, 'titre': parameters.titre,
+              'description': parameters.description, 'date_debut':
+              parameters.date_debut, 'date_echeance': parameters.date_echeance,
+              'complete': parameters.complete})"
+          contentType: application/json
+        method: POST
+      parameters:
+        - name: API_KEY
+          value:
+            $$env: API_KEY
+        - name: HOST
+          value:
+            $$env: HOST
+        - name: titre
+          value:
+            $$jsExpression: titreInput.value ?? ""
+        - name: description
+          value:
+            $$jsExpression: descriptionInput.value ?? ""
+        - name: date_debut
+          value:
+            $$jsExpression: dateDebutPicker.value ?? ""
+        - name: date_echeance
+          value:
+            $$jsExpression: dateEcheancePicker.value ?? ""
+    - name: AjouterSousTache
+      mode: mutation
+      query:
+        kind: rest
+        url:
+          $$jsExpression: "`${parameters.HOST}/api/sous-tache/ajouter`"
+        searchParams: []
+        headers:
+          - name: Authorization
+            value:
+              $$jsExpression: parameters.API_KEY
+        body:
+          kind: raw
+          content:
+            $$jsExpression:
+              "JSON.stringify({'tache_id': parameters.tache_id, 'titre':
+              parameters.titre})"
+          contentType: application/json
+        method: POST
+      parameters:
+        - name: API_KEY
+          value:
+            $$env: API_KEY
+        - name: HOST
+          value:
+            $$env: HOST
+        - name: tache_id
+          value:
+            $$jsExpression: tachesGrid?.selection?.id ?? ""
+        - name: titre
+          value:
+            $$jsExpression: titreInput.value ?? ""
+    - name: ModifierSousTache
+      mode: mutation
+      query:
+        kind: rest
+        url:
+          $$jsExpression: "`${parameters.HOST}/api/sous-tache/modifier`"
+        searchParams: []
+        headers:
+          - name: Authorization
+            value:
+              $$jsExpression: parameters.API_KEY
+        body:
+          kind: raw
+          content:
+            $$jsExpression: "JSON.stringify({'id': parameters.id, 'titre': parameters.titre})"
+          contentType: application/json
+        method: PUT
+      parameters:
+        - name: API_KEY
+          value:
+            $$env: API_KEY
+        - name: HOST
+          value:
+            $$env: HOST
+        - name: id
+          value:
+            $$jsExpression: sousTachesGrid?.selection?.id
+        - name: titre
+          value:
+            $$jsExpression: sousTacheTitreInput.value ?? ""
+    - name: SupprimerSousTache
+      mode: mutation
+      query:
+        kind: rest
+        url:
+          $$jsExpression: "`${parameters.HOST}/api/sous-tache/supprimer`"
+        searchParams:
+          - name: id
+            value:
+              $$jsExpression: parameters.id
+        headers:
+          - name: Authorization
+            value:
+              $$jsExpression: parameters.API_KEY
+        body:
+          kind: raw
+          content: ""
+          contentType: application/json
+        method: DELETE
+      parameters:
+        - name: API_KEY
+          value:
+            $$env: API_KEY
+        - name: HOST
+          value:
+            $$env: HOST
+        - name: id
+          value:
+            $$jsExpression: sousTachesGrid?.selection?.id
