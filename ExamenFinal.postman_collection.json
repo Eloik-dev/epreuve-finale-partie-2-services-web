@@ -1,0 +1,528 @@
+{
+	"info": {
+		"_postman_id": "83977e32-5fac-4632-8776-fa9f54844966",
+		"name": "ExamenFinal",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "14047321"
+	},
+	"item": [
+		{
+			"name": "CreerUtilisateur",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "courriel",
+							"value": "email@example.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "Mot de passe",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://epreuve-finale-services-web.onrender.com/api/utilisateur/creer",
+					"protocol": "https",
+					"host": [
+						"epreuve-finale-services-web",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"api",
+						"utilisateur",
+						"creer"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ModifierCle",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "courriel",
+							"value": "email@example.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "Mot de passe",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://epreuve-finale-services-web.onrender.com/api/utilisateur/modifier/cle",
+					"protocol": "https",
+					"host": [
+						"epreuve-finale-services-web",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"api",
+						"utilisateur",
+						"modifier",
+						"cle"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AfficherTaches",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "cle_api 1234",
+						"uuid": "8d164c57-74c4-4ce3-bb36-440d6fee3ef3"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
+				"url": {
+					"raw": "https://epreuve-finale-services-web.onrender.com/api/tache/afficher?complete=0",
+					"protocol": "https",
+					"host": [
+						"epreuve-finale-services-web",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"api",
+						"tache",
+						"afficher"
+					],
+					"query": [
+						{
+							"key": "complete",
+							"value": "0"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DetailsTache",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "cle_api 1234",
+						"uuid": "c8c4a6bd-5a29-4691-bfe0-6d03746f5594"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
+				"url": {
+					"raw": "https://epreuve-finale-services-web.onrender.com/api/tache/details?id=1",
+					"protocol": "https",
+					"host": [
+						"epreuve-finale-services-web",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"api",
+						"tache",
+						"details"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AjouterTache",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "cle_api 1234",
+						"uuid": "d21e4722-05ed-44da-8669-3f11a747431f"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "titre",
+							"value": "Nouvelle tâche",
+							"type": "text"
+						},
+						{
+							"key": "description",
+							"value": "Description de la nouvelle tâche",
+							"type": "text"
+						},
+						{
+							"key": "date_debut",
+							"value": "2024-05-04",
+							"type": "text"
+						},
+						{
+							"key": "date_echeance",
+							"value": "2024-05-10",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://epreuve-finale-services-web.onrender.com/api/tache/ajouter",
+					"protocol": "https",
+					"host": [
+						"epreuve-finale-services-web",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"api",
+						"tache",
+						"ajouter"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ModifierTache",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "cle_api 1234",
+						"uuid": "f07f2381-c0e8-4edc-ae98-ae7a95cd399e"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "id",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "titre",
+							"value": "Nouvelle tâche",
+							"type": "text"
+						},
+						{
+							"key": "description",
+							"value": "Description de la nouvelle tâche",
+							"type": "text"
+						},
+						{
+							"key": "date_debut",
+							"value": "2024-05-04",
+							"type": "text"
+						},
+						{
+							"key": "date_echeance",
+							"value": "2024-05-10",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://epreuve-finale-services-web.onrender.com/api/tache/modifier",
+					"protocol": "https",
+					"host": [
+						"epreuve-finale-services-web",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"api",
+						"tache",
+						"modifier"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ModifierStatusTache",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "cle_api 1234",
+						"uuid": "859d28ca-e36d-4675-9257-7b4a91328634"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "id",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "complete",
+							"value": "0",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://epreuve-finale-services-web.onrender.com/api/tache/modifier/status",
+					"protocol": "https",
+					"host": [
+						"epreuve-finale-services-web",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"api",
+						"tache",
+						"modifier",
+						"status"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SupprimerTache",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "cle_api 1234",
+						"uuid": "477a8145-1fee-44f6-9fda-0e280d687958"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
+				"url": {
+					"raw": "https://epreuve-finale-services-web.onrender.com/api/tache/supprimer?id=0",
+					"protocol": "https",
+					"host": [
+						"epreuve-finale-services-web",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"api",
+						"tache",
+						"supprimer"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "0"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AjouterSousTache",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "cle_api 1234",
+						"uuid": "f5812749-a3f8-4f61-83a7-001d572af86b"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "tache_id",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "titre",
+							"value": "Nouvelle sous-tâche",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://epreuve-finale-services-web.onrender.com/api/sous-tache/ajouter",
+					"protocol": "https",
+					"host": [
+						"epreuve-finale-services-web",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"api",
+						"sous-tache",
+						"ajouter"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ModifierSousTache",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "cle_api 1234",
+						"uuid": "ac3727bf-fd20-4d93-8909-dc41adb9eca8"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "id",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "titre",
+							"value": "Nouvelle sous-tâche",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://epreuve-finale-services-web.onrender.com/api/sous-tache/modifier",
+					"protocol": "https",
+					"host": [
+						"epreuve-finale-services-web",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"api",
+						"sous-tache",
+						"modifier"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ModifierStatusSousTache",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "cle_api 1234",
+						"uuid": "f95be8e9-9321-4dcc-a1f2-7c1d6f573f6c"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "id",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "complete",
+							"value": "0",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://epreuve-finale-services-web.onrender.com/api/sous-tache/modifier/status",
+					"protocol": "https",
+					"host": [
+						"epreuve-finale-services-web",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"api",
+						"sous-tache",
+						"modifier",
+						"status"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SupprimerSousTache",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "cle_api 1234",
+						"uuid": "8b9cc392-a383-42e8-ac89-226b01e0e7a6"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
+				"url": {
+					"raw": "https://epreuve-finale-services-web.onrender.com/api/sous-tache/supprimer?id=0",
+					"protocol": "https",
+					"host": [
+						"epreuve-finale-services-web",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"api",
+						"sous-tache",
+						"supprimer"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "0"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
