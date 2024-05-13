@@ -1,4 +1,4 @@
-const RENDER_API_URL = "https://epreuve-finale-services-web.onrender.com:3000";
+const RENDER_API_URL = "https://epreuve-finale-services-web.onrender.com";
 
 // Les actions possibles du formulaire
 const ACTIONS = {
